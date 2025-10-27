@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ASCII Interceptor Sim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- unctom.css-->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <div class="crt-container">
+        <!-- Panels -->
+        <div id="overview-panel" class="ui-panel"><h4>TARGET DATA</h4><div class="data-group"><span class="data-label">POS-X</span><span id="target-x" class="data-value">--.--</span></div><div class="data-group"><span class="data-label">POS-Y</span><span id="target-y" class="data-value">--.--</span></div><div class="data-group"><span class="data-label">POS-Z</span><span id="target-z" class="data-value">--.--</span></div></div>
+        <div id="countdown-panel" class="ui-panel"><h4>TURRET/INTERCEPTOR</h4><div class="data-block"><div class="data-group"><span class="data-label">AZIMUTH</span><span id="turret-azimuth" class="data-value">--.--°</span></div><div class="data-group"><span class="data-label">ELEVATION</span><span id="turret-elevation" class="data-value">--.--°</span></div><hr style="border-color: rgba(0,0,0,0.1); margin: 0.5em 0;"><div class="data-group"><span class="data-label">INT-POS-Y</span><span id="interceptor-y" class="data-value">--.--</span></div></div></div>
+        <div id="media-panel" class="ui-panel">
+            <h4>BALLER ASCII INTERCEPTOR SIM [KILL ( ͡° ͜ʖ ͡°) WITH MATHS!!!!(LEFT OR RIGHT CLICK TO ROTATE, SCROLL TO ZOOM)]</h4>
+            <pre id="simulation-screen"></pre>
+        </div>
+        <div id="worldclock-panel" class="ui-panel"><h4>RUNTIME</h4><div id="runtime-display" class="data-value">0s</div></div>
+        <div id="config-panel" class="ui-panel"><h4>FPS</h4><div id="fps-display" class="data-value">--</div></div>
+        <div id="cursor-panel" class="ui-panel"><h4>STATUS</h4><div id="status-display" class="data-value">OPERATIONAL</div></div>
+    </div>
+    
+    <!-- cow goes moo flip .js (bye bye to yuhao's drone and all flying sharts) -->
+    <script src="app.js"></script>
 </body>
-    <h1>WAZZAAAAAA,IM A TARGET INTERCEPORT!!</h1>
 </html>
