@@ -1,0 +1,71 @@
+:root {
+    --text-color: rgba(0, 0, 0, 0.7);
+    --glow-color: rgba(0, 0, 0, 0.05);
+    --bg-color: #f4f7fa;
+    --box-bg-color: rgba(0, 0, 0, 0.03);
+    --accent-color: rgba(0, 0, 0, 0.9);
+    --grid-color: rgba(0, 0, 0, 0.4);
+}
+
+body, html {
+    height: 100%; margin: 0; padding: 0;
+    /* uses vin mono pro bc its cool
+    */
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color); color: var(--text-color);
+    overflow: hidden;
+}
+
+.crt-container {
+    position: relative; width: 100%; height: 100%;
+    padding: 2.5rem; box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr; 
+    grid-template-rows: auto 1fr auto;
+    gap: 2rem;
+    grid-template-areas:
+        "overview ... countdown"
+        "media media media"
+        "worldclock config cursor";
+}
+
+#media-panel {
+    grid-area: media; display: flex; flex-direction: column;
+}
+
+#simulation-screen {
+    flex-grow: 1;
+    background-color: var(--box-bg-color);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    padding: 1em;
+    /* ASCII is in roboto mono so it aligns better 
+    */
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    line-height: 1.0;
+    white-space: pre;
+    overflow: hidden;
+    color: var(--grid-color);
+    cursor: grab;
+    user-select: none;
+}
+#simulation-screen:active {
+    cursor: grabbing;
+}
+
+.ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
+.ui-panel h4 { font-weight: 500; color: var(--accent-color); margin: 0 0 1em 0; font-size: 1.1em; text-transform: uppercase; }
+.data-label { opacity: 0.6; display: inline-block; width: 100px; }
+.data-value { color: var(--accent-color); font-weight: 500; }
+.data-block { position: relative; background-color: var(--box-bg-color); padding: 1em; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 4px; }
+#overview-panel { grid-area: overview; }
+#countdown-panel { grid-area: countdown; text-align: right;}
+#worldclock-panel { grid-area: worldclock; }
+#config-panel { grid-area: config; text-align: center;}
+#cursor-panel { grid-area: cursor; text-align: right;}
+
+@media (max-width: 1200px) {
+    .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
+    #simulation-screen { font-size: 8px; }
+}
