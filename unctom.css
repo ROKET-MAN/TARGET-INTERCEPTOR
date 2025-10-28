@@ -9,7 +9,7 @@
 
 body, html {
     height: 100%; margin: 0; padding: 0;
-    /* uses vin mono pro bc its cool
+    /* uses roboto mono bc it makes the face look better :D
     */
     font-family: 'Roboto Mono', monospace;
     background-color: var(--bg-color); color: var(--text-color);
