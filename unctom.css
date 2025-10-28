@@ -54,7 +54,7 @@ body, html {
     cursor: grabbing;
 }
 
-.ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
+ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
 .ui-panel h4 { font-weight: 500; color: var(--accent-color); margin: 0 0 1em 0; font-size: 1.1em; text-transform: uppercase; }
 .data-label { opacity: 0.6; display: inline-block; width: 100px; }
 .data-value { color: var(--accent-color); font-weight: 500; }
@@ -64,16 +64,14 @@ body, html {
 #worldclock-panel { grid-area: worldclock; }
 #config-panel { grid-area: config; text-align: center;}
 #cursor-panel { grid-area: cursor; text-align: right;}
+
 #art-panel {
     grid-area: art;
     font-family: 'Roboto Mono', monospace; /* Use monospace for ASCII */
-    
-    /* Made the font even smaller */
-    font-size: 5px; 
-
-    /* Squished the lines together (less than 1.0) */
-    line-height: 0.8;
-
+    /* size*/
+    font-size: 10px; 
+    /* line*/
+    line-height: 1.1;
     text-align: center;
     overflow: hidden;
 }
