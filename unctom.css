@@ -54,7 +54,7 @@ body, html {
     cursor: grabbing;
 }
 
-ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
+.ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
 .ui-panel h4 { font-weight: 500; color: var(--accent-color); margin: 0 0 1em 0; font-size: 1.1em; text-transform: uppercase; }
 .data-label { opacity: 0.6; display: inline-block; width: 100px; }
 .data-value { color: var(--accent-color); font-weight: 500; }
@@ -65,17 +65,34 @@ ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size:
 #config-panel { grid-area: config; text-align: center;}
 #cursor-panel { grid-area: cursor; text-align: right;}
 
+@media (max-width: 1200px) {
+    .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
+    #simulation-screen { font-size: 8px; }
+
 #art-panel {
     grid-area: art;
     font-family: 'Roboto Mono', monospace; /* Use monospace for ASCII */
     /* size*/
     font-size: 10px; 
     /* line*/
-    line-height: 1.1;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     overflow: hidden;
 }
+
+/* yeah */
+#art-panel pre {
+    margin: 0;
+}
+
 @media (max-width: 1200px) {
     .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
     #simulation-screen { font-size: 8px; }
+    
+    /* hide*/
+    #art-panel {
+        display: none;
+    }
 }
