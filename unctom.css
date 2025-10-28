@@ -73,6 +73,7 @@ body, html {
     grid-area: art;
     font-family: 'Roboto Mono', monospace; /* Use monospace for ASCII */
     /* size*/
+    line-height: 1.1;
     font-size: 10px; 
     /* line*/
     display: flex;
@@ -81,18 +82,4 @@ body, html {
 
     overflow: hidden;
 }
-
-/* yeah */
-#art-panel pre {
-    margin: 0;
-}
-
-@media (max-width: 1200px) {
-    .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
-    #simulation-screen { font-size: 8px; }
-    
-    /* hide*/
-    #art-panel {
-        display: none;
-    }
 }
