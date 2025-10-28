@@ -64,7 +64,19 @@ body, html {
 #worldclock-panel { grid-area: worldclock; }
 #config-panel { grid-area: config; text-align: center;}
 #cursor-panel { grid-area: cursor; text-align: right;}
+#art-panel {
+    grid-area: art;
+    font-family: 'Roboto Mono', monospace; /* Use monospace for ASCII */
+    
+    /* Made the font even smaller */
+    font-size: 5px; 
 
+    /* Squished the lines together (less than 1.0) */
+    line-height: 0.8;
+
+    text-align: center;
+    overflow: hidden;
+}
 @media (max-width: 1200px) {
     .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
     #simulation-screen { font-size: 8px; }
