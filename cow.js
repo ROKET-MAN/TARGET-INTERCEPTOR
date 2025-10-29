@@ -1,4 +1,4 @@
-// --- UI Selectors ---
+// UI Selectors
 const runtimeDisplay = document.getElementById('runtime-display'), fpsDisplay = document.getElementById('fps-display');
 const targetXDisplay = document.getElementById('target-x'), targetYDisplay = document.getElementById('target-y'), targetZDisplay = document.getElementById('target-z');
 const interceptorYDisplay = document.getElementById('interceptor-y');
@@ -9,7 +9,7 @@ const simulationScreen = document.getElementById('simulation-screen');
 const TARGET_ART = ["( ͡° ͜ʖ ͡°)"]
 const WRECKAGE_ART = ["#"];
 
-// --- Physics stuff ---
+//  Physics stuff
 class Point3D { constructor(x, y, z) { this.x = x; this.y = y; this.z = z; } }
 class Target {
     constructor(x, y, z, vx, vy, vz) { this.position = new Point3D(x, y, z); this.velocity = new Point3D(vx, vy, vz); this.isHit = false; }
@@ -26,7 +26,7 @@ class Turret {
     getGunTipPosition() { 
         let tip = new Point3D(0, 0, this.gunLength); 
         let elevSin = Math.sin(this.elevation), elevCos = Math.cos(this.elevation); 
-        // -Use proper counter-clockwise rotation for elevation -
+        // Use proper counter-clockwise rotation for elevation
         tip = new Point3D(tip.x, tip.y * elevCos + tip.z * elevSin, -tip.y * elevSin + tip.z * elevCos); 
         let azimSin = Math.sin(this.azimuth), azimCos = Math.cos(this.azimuth); 
         tip = new Point3D(tip.x * azimCos + tip.z * azimSin, tip.y, -tip.x * azimSin + tip.z * azimCos); 
@@ -54,7 +54,7 @@ function renderASCII(target, interceptor, turret) {
     
     edges.forEach(edge => { drawLine(buffer, project(rotate(vertices[edge[0]], angleX, angleY)), project(rotate(vertices[edge[1]], angleX, angleY)), '.'); });
     
-    // Turret Drawing Logic ---
+    // Turret Drawing Logic
     const turretBaseRotated = rotate(turret.basePosition, angleX, angleY);
     const gunTipRotated = rotate(turret.getGunTipPosition(), angleX, angleY);
     const turretBaseProj = project(turretBaseRotated);
@@ -78,3 +78,21 @@ function renderASCII(target, interceptor, turret) {
         // base, which will overwrite the start of the gun line, ITS KOREAAAANNNNNN
         placeObject(turret.basePosition, "ㅁ");
     }
+    let targetArt = target.isHit ? WRECKAGE_ART : TARGET_ART;
+    placeObject(target.position, targetArt);
+    if (interceptor) placeObject(interceptor.position, '+');
+    simulationScreen.textContent = buffer.map(row => row.join('')).join('\n');
+}
+let target, interceptor, turret, launchTime, hasFired;
+function resetSimulation() {
+    let startX, startY, startZ, velX, velY, velZ; const spawnFace = Math.floor(Math.random() * 6); const posOffset = cubeSize + 10; const randomPosOnFace = () => (Math.random() - 0.5) * cubeSize * 1.5;
+    switch (spawnFace) {
+        case 0: startX = -posOffset; startY = randomPosOnFace(); startZ = randomPosOnFace(); velX = 30 + Math.random() * 20; velY = (Math.random() - 0.5) * 20; velZ = (Math.random() - 0.5) * 20; break;
+        case 1: startX = posOffset; startY = randomPosOnFace(); startZ = randomPosOnFace(); velX = -30 - Math.random() * 20; velY = (Math.random() - 0.5) * 20; velZ = (Math.random() - 0.5) * 20; break;
+        case 2: startX = randomPosOnFace(); startY = posOffset; startZ = randomPosOnFace(); velX = (Math.random() - 0.5) * 20; velY = -10 - Math.random() * 10; velZ = (Math.random() - 0.5) * 20; break;
+        case 3: startX = randomPosOnFace(); startY = randomPosOnFace(); startZ = posOffset; velX = (Math.random() - 0.5) * 20; velY = (Math.random() - 0.5) * 20; velZ = -30 - Math.random() * 20; break;
+        case 4: startX = randomPosOnFace(); startY = randomPosOnFace(); startZ = -posOffset; velX = (Math.random() - 0.5) * 20; velY = (Math.random() - 0.5) * 20; velZ = 30 + Math.random() * 20; break;
+        default: startX = randomPosOnFace(); startY = -posOffset; startZ = randomPosOnFace(); velX = (Math.random() - 0.5) * 20; velY = 40 + Math.random() * 20; velZ = (Math.random() - 0.5) * 20; break;
+    }
+    target = new Target(startX, startY, startZ, velX, velY, velZ); turret = new Turret(0, -cubeSize, 0); interceptor = null; hasFired = false; launchTime = performance.now() + 2000; statusDisplay.textContent = "ACQUIRING";
+}
