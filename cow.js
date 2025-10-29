@@ -114,7 +114,7 @@
             requestAnimationFrame(animate);
         }
         animate();
-        // Mouse controls
+        // Mouse controls :D
         let isDragging = false, lastMouseX = 0, lastMouseY = 0;
         simulationScreen.addEventListener('mousedown', (e) => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
         window.addEventListener('mouseup', () => { isDragging = false; });
