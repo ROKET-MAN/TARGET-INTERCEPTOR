@@ -96,3 +96,10 @@ function resetSimulation() {
     }
     target = new Target(startX, startY, startZ, velX, velY, velZ); turret = new Turret(0, -cubeSize, 0); interceptor = null; hasFired = false; launchTime = performance.now() + 2000; statusDisplay.textContent = "ACQUIRING";
 }
+animate();
+// Mouse controls...
+let isDragging = false, lastMouseX = 0, lastMouseY = 0;
+simulationScreen.addEventListener('mousedown', (e) => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
+window.addEventListener('mouseup', () => { isDragging = false; });
+window.addEventListener('mousemove', (e) => { if (isDragging) { const dx = e.clientX - lastMouseX, dy = e.clientY - lastMouseY; angleY += dx * 0.005; angleX += dy * 0.005; lastMouseX = e.clientX; lastMouseY = e.clientY; } });
+simulationScreen.addEventListener('wheel', (e) => { e.preventDefault(); if (e.deltaY < 0) zoom = Math.min(zoom + 0.1, 3.0); else zoom = Math.max(zoom - 0.1, 0.2); });
