@@ -37,3 +37,25 @@ class Turret {
     isAligned() { const azimDiff = Math.abs(this.azimuth - this.targetAzimuth); const elevDiff = Math.abs(this.elevation - this.targetElevation); return azimDiff < this.alignmentThreshold && elevDiff < this.alignmentThreshold; }
     static calculateLeadPoint(target, turretPos, speed) { let t = 0; for (let i = 0; i < 10; i++) { const fTX = target.position.x + target.velocity.x * t, fTY = target.position.y + target.velocity.y * t - 0.5 * 9.81 * t*t, fTZ = target.position.z + target.velocity.z * t; const dx = fTX - turretPos.x, dy = fTY - turretPos.y, dz = fTZ - turretPos.z; if (speed <= 0) { t = Infinity; break; } t = Math.sqrt(dx*dx + dy*dy + dz*dz) / speed; } return new Point3D(target.position.x + target.velocity.x * t, target.position.y + target.velocity.y * t - 0.5 * 9.81 * t*t, target.position.z + target.velocity.z * t); }
 }
+//  ASCII renderer
+const SCREEN_WIDTH = 180, SCREEN_HEIGHT = 55, cubeSize = 80;
+let angleX = 0.3, angleY = -0.5, zoom = 1.0;
+const vertices = [ new Point3D(-cubeSize, -cubeSize, -cubeSize), new Point3D(cubeSize, -cubeSize, -cubeSize), new Point3D(cubeSize, cubeSize, -cubeSize), new Point3D(-cubeSize, cubeSize, -cubeSize), new Point3D(-cubeSize, -cubeSize, cubeSize), new Point3D(cubeSize, -cubeSize, cubeSize), new Point3D(cubeSize, cubeSize, cubeSize), new Point3D(-cubeSize, cubeSize, cubeSize) ];
+const edges = [ [0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7] ];
+
+function rotate(p, ax, ay) { const sinX = Math.sin(ax), cosX = Math.cos(ax), sinY = Math.sin(ay), cosY = Math.cos(ay); let ry = { x: p.x * cosY - p.z * sinY, y: p.y, z: p.x * sinY + p.z * cosY }; return new Point3D(ry.x, ry.y * cosX - ry.z * sinX, ry.y * sinX + ry.z * cosX); }
+function project(p) { const fov = 350 * zoom, factor = fov / (400 + p.z); return { x: Math.round(p.x * factor + SCREEN_WIDTH / 2), y: Math.round(-p.y * factor + SCREEN_HEIGHT / 2), z: p.z }; }
+function drawLine(buffer, p1, p2, char) { let x0 = p1.x, y0 = p1.y, x1 = p2.x, y1 = p2.y; const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1, dy = -Math.abs(y1 - y0), sy = y0 < 1 ? 1 : -1; let err = dx + dy, e2; while (true) { if (x0 >= 0 && x0 < SCREEN_WIDTH && y0 >= 0 && y0 < SCREEN_HEIGHT) buffer[y0][x0] = char; if (x0 === x1 && y0 === y1) break; e2 = 2 * err; if (e2 >= dy) { err += dy; x0 += sx; } if (e2 <= dx) { err += dx; y0 += sy; } } }
+
+function renderASCII(target, interceptor, turret) {
+    let buffer = Array(SCREEN_HEIGHT).fill(null).map(() => Array(SCREEN_WIDTH).fill(' '));
+    let zBuffer = Array(SCREEN_HEIGHT).fill(null).map(() => Array(SCREEN_WIDTH).fill(Infinity));
+    const placeObject = (p, art) => { const rotated_p = rotate(p, angleX, angleY), proj = project(rotated_p); if (typeof art === 'string') { if (proj.x >= 0 && proj.x < SCREEN_WIDTH && proj.y >= 0 && proj.y < SCREEN_HEIGHT && proj.z < zBuffer[proj.y][proj.x]) { buffer[proj.y][proj.x] = art; zBuffer[proj.y][proj.x] = proj.z; } } else { const artH = art.length, artW = art[0].length, startY = proj.y - Math.floor(artH / 2), startX = proj.x - Math.floor(artW / 2); for (let i = 0; i < artH; i++) for (let j = 0; j < artW; j++) { const char = art[i][j]; if (char === ' ') continue; const y = startY + i, x = startX + j; if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT && proj.z < zBuffer[y][x]) { buffer[y][x] = char; zBuffer[y][x] = proj.z; } } } };
+    
+    edges.forEach(edge => { drawLine(buffer, project(rotate(vertices[edge[0]], angleX, angleY)), project(rotate(vertices[edge[1]], angleX, angleY)), '.'); });
+    
+    // --- REWRITTEN: Corrected Turret Drawing Logic ---
+    const turretBaseRotated = rotate(turret.basePosition, angleX, angleY);
+    const gunTipRotated = rotate(turret.getGunTipPosition(), angleX, angleY);
+    const turretBaseProj = project(turretBaseRotated);
+    const gunTipProj = project(gunTipRotated);
