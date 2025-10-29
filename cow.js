@@ -54,8 +54,12 @@ function renderASCII(target, interceptor, turret) {
     
     edges.forEach(edge => { drawLine(buffer, project(rotate(vertices[edge[0]], angleX, angleY)), project(rotate(vertices[edge[1]], angleX, angleY)), '.'); });
     
-    // --- REWRITTEN: Corrected Turret Drawing Logic ---
+    // Turret Drawing Logic ---
     const turretBaseRotated = rotate(turret.basePosition, angleX, angleY);
     const gunTipRotated = rotate(turret.getGunTipPosition(), angleX, angleY);
     const turretBaseProj = project(turretBaseRotated);
     const gunTipProj = project(gunTipRotated);
+
+    const dx = gunTipProj.x - turretBaseProj.x;
+    const dy = gunTipProj.y - turretBaseProj.y;
+    const projLength = Math.sqrt(dx * dx + dy * dy);
