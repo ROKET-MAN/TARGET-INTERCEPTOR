@@ -63,3 +63,18 @@ function renderASCII(target, interceptor, turret) {
     const dx = gunTipProj.x - turretBaseProj.x;
     const dy = gunTipProj.y - turretBaseProj.y;
     const projLength = Math.sqrt(dx * dx + dy * dy);
+    if (projLength < 1.0) { // Gun is foreshortened (pointing at camera)
+        placeObject(turret.basePosition, "·");
+    } else { // Gun is viewed from the side
+        const angleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
+        let gunChar;
+        if ((angleDeg > -112.5 && angleDeg < -67.5) || (angleDeg > 67.5 && angleDeg < 112.5)) gunChar = '|';
+        else if ((angleDeg > -22.5 && angleDeg < 22.5) || (angleDeg > 157.5 || angleDeg < -157.5)) gunChar = '-';
+        else if ((angleDeg >= 22.5 && angleDeg <= 67.5) || (angleDeg <= -112.5 && angleDeg > -157.5)) gunChar = '\\';
+        else gunChar = '/';
+        
+        // the barrel 
+        drawLine(buffer, turretBaseProj, gunTipProj, gunChar);
+        // base, which will overwrite the start of the gun line, ITS KOREAAAANNNNNN
+        placeObject(turret.basePosition, "ㅁ");
+    }
