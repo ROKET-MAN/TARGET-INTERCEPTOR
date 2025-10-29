@@ -9,8 +9,6 @@
 
 body, html {
     height: 100%; margin: 0; padding: 0;
-    /* uses roboto mono bc it makes the face look better :D
-    */
     font-family: 'Roboto Mono', monospace;
     background-color: var(--bg-color); color: var(--text-color);
     overflow: hidden;
@@ -20,11 +18,11 @@ body, html {
     position: relative; width: 100%; height: 100%;
     padding: 2.5rem; box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr; 
+    grid-template-columns: 1fr auto 1fr;
     grid-template-rows: auto 1fr auto;
     gap: 2rem;
     grid-template-areas:
-        "overview ... countdown"
+        "overview art countdown"
         "media media media"
         "worldclock config cursor";
 }
@@ -39,8 +37,6 @@ body, html {
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 4px;
     padding: 1em;
-    /* ASCII is in roboto mono so it aligns better 
-    */
     font-family: 'Roboto Mono', monospace;
     font-size: 10px;
     line-height: 1.0;
@@ -54,7 +50,13 @@ body, html {
     cursor: grabbing;
 }
 
-.ui-panel { text-shadow: 0 0 10px var(--glow-color); line-height: 1.8; font-size: clamp(0.7rem, 1.2vw, 0.9rem); white-space: pre; }
+.ui-panel { 
+    text-shadow: 0 0 10px var(--glow-color); 
+    line-height: 1.8; 
+    font-size: 0.7rem; 
+    white-space: pre; 
+}
+
 .ui-panel h4 { font-weight: 500; color: var(--accent-color); margin: 0 0 1em 0; font-size: 1.1em; text-transform: uppercase; }
 .data-label { opacity: 0.6; display: inline-block; width: 100px; }
 .data-value { color: var(--accent-color); font-weight: 500; }
@@ -65,21 +67,44 @@ body, html {
 #config-panel { grid-area: config; text-align: center;}
 #cursor-panel { grid-area: cursor; text-align: right;}
 
-@media (max-width: 1200px) {
-    .crt-container { display: flex; flex-direction: column; padding: 1.5rem; gap: 1.5rem; overflow-y: auto; }
-    #simulation-screen { font-size: 8px; }
-
+/* art-panel style for LARGE screens */
 #art-panel {
     grid-area: art;
-    font-family: 'Roboto Mono', monospace; /* Use monospace for ASCII */
-    /* size*/
+    font-family: 'Roboto Mono', monospace;
     line-height: 1.1;
-    font-size: 10px; 
-    /* line*/
+    font-size: 5px; 
     display: flex;
     justify-content: center;
     align-items: center;
-
     overflow: hidden;
+    white-space: normal; 
 }
+
+#art-panel pre {
+    margin: 0;
+}
+
+
+@media (max-width: 900px) {
+    .crt-container { 
+        display: flex; 
+        flex-direction: column; 
+        padding: 1.5rem; 
+        gap: 1.5rem; 
+        overflow-y: auto; 
+    }
+    #simulation-screen { font-size: 8px; }
+
+    /* style the art on SMALL screens */
+    #art-panel {
+        display: flex; /* visible */
+        
+        /*art much smaller to fit */
+        font-size: 8px;
+        line-height: 1.00;
+        
+        /*flex layout */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
 }
