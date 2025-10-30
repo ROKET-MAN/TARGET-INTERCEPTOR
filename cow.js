@@ -9,7 +9,7 @@
         const TARGET_ART = ["( ͡° ͜ʖ ͡°)"]
         const WRECKAGE_ART = ["#"];
 
-        //Physics
+        //Physics FACK
         class Point3D { constructor(x, y, z) { this.x = x; this.y = y; this.z = z; } }
         class Target {
             constructor(x, y, z, vx, vy, vz) { this.position = new Point3D(x, y, z); this.velocity = new Point3D(vx, vy, vz); this.isHit = false; }
